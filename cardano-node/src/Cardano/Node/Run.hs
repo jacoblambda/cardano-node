@@ -45,12 +45,13 @@ import           Cardano.BM.Data.Transformers (setHostname)
 import           Cardano.BM.Trace
 
 import           Cardano.Config.Git.Rev (gitRev)
-import           Cardano.Node.Configuration.Logging (LoggingLayer (..), Severity (..), shutdownLoggingLayer)
+import           Cardano.Node.Configuration.Logging (LoggingLayer (..), Severity (..),
+                     shutdownLoggingLayer)
 #ifdef UNIX
 import           Cardano.Tracing.Config (traceBlockFetchDecisions)
 #endif
-import           Cardano.Tracing.Config (TraceOptions (..), TraceSelection (..))
 import           Cardano.Node.Types
+import           Cardano.Tracing.Config (TraceOptions (..), TraceSelection (..))
 
 import           Ouroboros.Consensus.Block (BlockProtocol)
 import qualified Ouroboros.Consensus.Cardano as Consensus
@@ -73,11 +74,12 @@ import qualified Ouroboros.Consensus.Storage.ChainDB as ChainDB
 import           Ouroboros.Consensus.Storage.ImmutableDB (ValidationPolicy (..))
 import           Ouroboros.Consensus.Storage.VolatileDB (BlockValidationPolicy (..))
 
+import           Cardano.Node.Configuration.Socket (SocketOrSocketInfo (..),
+                     gatherConfiguredSockets)
+import           Cardano.Node.Configuration.Topology
+import           Cardano.Node.Handlers.Shutdown
 import           Cardano.Node.Protocol (SomeConsensusProtocol (..), mkConsensusProtocol,
                      renderProtocolInstantiationError)
-import           Cardano.Node.Handlers.Shutdown
-import           Cardano.Node.Configuration.Socket (SocketOrSocketInfo (..), gatherConfiguredSockets)
-import           Cardano.Node.Configuration.Topology
 import           Cardano.Tracing.Kernel
 import           Cardano.Tracing.Peer
 import           Cardano.Tracing.Tracers
@@ -85,6 +87,7 @@ import           Cardano.Tracing.Tracers
 import           Cardano.Node.TUI.Run
 #endif
 
+{- HLINT ignore "Use fewer imports" -}
 
 runNode
   :: LoggingLayer
@@ -182,7 +185,7 @@ checkLiveViewrequiredTracers traceConfig = do
   if all (== True) reqTracers
   then pure ()
   else do putTextLn "for full functional 'LiveView', please turn on the following \
-                    \tracers in the configuration file: TraceBlockFetchDecisions, \\
+                    \tracers in the configuration file: TraceBlockFetchDecisions, \
                     \TraceChainDb, TraceForge & TraceMempool"
 
           putTextLn "     (press enter to continue)"
