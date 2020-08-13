@@ -4,6 +4,7 @@ module Test.CLI.Shelley.Tests
   ( keyTests
   , certificateTests
   , metaDatatests
+  , multiSigTests
   , txTests
   ) where
 
@@ -19,6 +20,9 @@ import           Test.CLI.Shelley.Golden.Genesis.KeyGenDelegate
 import           Test.CLI.Shelley.Golden.Genesis.KeyGenGenesis (golden_shelleyGenesisKeyGenGenesis)
 import           Test.CLI.Shelley.Golden.Genesis.KeyGenUtxo (golden_shelleyGenesisKeyGenUtxo)
 import           Test.CLI.Shelley.Golden.Genesis.KeyHash (golden_shelleyGenesisKeyHash)
+import           Test.CLI.Shelley.Golden.MultiSig.Address (golden_shelleyAllMultiSigAddressBuild,
+                     golden_shelleyAnyMultiSigAddressBuild,
+                     golden_shelleyAtLeastMultiSigAddressBuild)
 import           Test.CLI.Shelley.Golden.Node.IssueOpCert (golden_shelleyNodeIssueOpCert)
 import           Test.CLI.Shelley.Golden.Node.KeyGen (golden_shelleyNodeKeyGen)
 import           Test.CLI.Shelley.Golden.Node.KeyGenKes (golden_shelleyNodeKeyGenKes)
@@ -125,4 +129,13 @@ metaDatatests =
   H.checkSequential
     $ H.Group "Metadata Goldens"
         [ ("golden_stakePoolMetadataHash", golden_stakePoolMetadataHash)
+        ]
+
+multiSigTests :: IO Bool
+multiSigTests =
+  H.checkSequential
+    $ H.Group "Multisig Goldens"
+        [ ("golden_shelleyAllMultiSigAddressBuild", golden_shelleyAllMultiSigAddressBuild)
+        , ("golden_shelleyAnyMultiSigAddressBuild", golden_shelleyAnyMultiSigAddressBuild)
+        , ("golden_shelleyAtLeastMultiSigAddressBuild", golden_shelleyAtLeastMultiSigAddressBuild)
         ]

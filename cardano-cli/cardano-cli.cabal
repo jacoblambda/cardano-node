@@ -192,6 +192,7 @@ test-suite cardano-cli-test
                         Test.CLI.Shelley.Golden.Node.KeyGenKes
                         Test.CLI.Shelley.Golden.Node.KeyGenVrf
                         Test.CLI.Shelley.Golden.Metadata.StakePoolMetadata
+                        Test.CLI.Shelley.Golden.MultiSig.Address
                         Test.CLI.Shelley.Golden.StakeAddress.Build
                         Test.CLI.Shelley.Golden.StakeAddress.DeregistrationCertificate
                         Test.CLI.Shelley.Golden.StakeAddress.KeyGen

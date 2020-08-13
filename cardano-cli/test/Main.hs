@@ -23,6 +23,7 @@ main = do
   defaultMain [ Test.CLI.Shelley.Tests.keyTests
               , Test.CLI.Shelley.Tests.certificateTests
               , Test.CLI.Shelley.Tests.metaDatatests
+              , Test.CLI.Shelley.Tests.multiSigTests
               , Test.CLI.Shelley.Tests.txTests
 
               , Test.Pioneers.Exercise1.tests
