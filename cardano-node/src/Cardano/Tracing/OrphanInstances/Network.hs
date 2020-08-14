@@ -31,6 +31,7 @@ import           Ouroboros.Network.BlockFetch.ClientState (TraceFetchClientState
                      TraceLabelPeer (..))
 import           Ouroboros.Network.BlockFetch.Decision (FetchDecision, FetchDecline (..))
 import           Ouroboros.Network.Codec (AnyMessage (..))
+import           Ouroboros.Network.KeepAlive (TraceKeepAliveClient)
 import qualified Ouroboros.Network.NodeToClient as NtC
 import           Ouroboros.Network.NodeToNode (ErrorPolicyTrace (..), TraceSendRecv (..),
                      WithAddr (..))
@@ -116,6 +117,11 @@ instance HasSeverityAnnotation (TraceTxSubmissionInbound txid tx) where
 
 instance HasPrivacyAnnotation (TraceTxSubmissionOutbound txid tx)
 instance HasSeverityAnnotation (TraceTxSubmissionOutbound txid tx) where
+  getSeverityAnnotation _ = Info
+
+
+instance HasPrivacyAnnotation (TraceKeepAliveClient remotePeer)
+instance HasSeverityAnnotation (TraceKeepAliveClient remotePeer) where
   getSeverityAnnotation _ = Info
 
 
@@ -320,6 +326,12 @@ instance (Show tx, Show txid)
       => Transformable Text IO (TraceTxSubmissionOutbound txid tx) where
   trTransformer = trStructuredText
 instance HasTextFormatter (TraceTxSubmissionOutbound txid tx) where
+  formatText _ = pack . show . toList
+
+
+instance Transformable Text IO (TraceKeepAliveClient remotePeer) where
+  trTransformer = trStructuredText
+instance HasTextFormatter (TraceKeepAliveClient peer) where
   formatText _ = pack . show . toList
 
 
@@ -586,6 +598,14 @@ instance (Show txid, Show tx)
     mkObject
       [ "kind" .= String "TraceTxSubmissionOutboundSendMsgReplyTxs"
       ]
+
+
+instance ToObject (TraceKeepAliveClient peer) where
+  toObject _verb _ = -- TODO the constructor of this type is hidden
+    mkObject
+      [ "kind" .= String "AddSample"
+      ]
+
 
 instance Show addr => ToObject (WithAddr addr ErrorPolicyTrace) where
   toObject _verb (WithAddr addr ev) =
